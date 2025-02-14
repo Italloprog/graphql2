@@ -10,13 +10,16 @@ export const resolvers = {
   Query: {
     
     montadoras: async (_parent: any, _args: any) => {
-      return await repositorioMontadoras.find();
+      return await repositorioMontadoras.find({
+        relations: ['veiculos']
+      });
     },
 
     veiculos: async (_parent: any, _args: any) => {
-      return await repositorioVeiculos.find();
+      return await repositorioVeiculos.find({
+        relations: ['montadora']
+      });
     },
-
   },
 
   Mutation:{
@@ -29,8 +32,8 @@ export const resolvers = {
 
     deletarMontadora: async (_parent: any, _args: any) => {
       let {id} = _args;
-      let montadoraApagar = await repositorioMontadoras.findOneBy({
-        id: id
+      let montadoraApagar = await repositorioMontadoras.findOne({
+        where: {id: id}
       })
      
       if (!montadoraApagar){
@@ -59,6 +62,23 @@ export const resolvers = {
 
       let veiculoCriado = await repositorioVeiculos.save(novoVeiculo);
       return veiculoCriado;
+    },
+
+    deletarVeiculos: async (_parent: any, _args: any) => {
+      let {id} = _args;
+      let veiculoApagar = await repositorioVeiculos.findOne({
+        where: {id: id}
+      })
+     
+      if (!veiculoApagar){
+        throw new Error('id nao encontrado');
+      }
+
+      let copiaVeiculo = { ...veiculoApagar };
+
+      await repositorioVeiculos.remove(veiculoApagar);
+      
+      return copiaVeiculo;
     },
   }
 };

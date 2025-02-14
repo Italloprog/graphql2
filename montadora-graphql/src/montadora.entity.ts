@@ -3,17 +3,13 @@ import { Veiculo } from "./veiculo.entity";
 
 @Entity()
 export class Montadora{
-
     @PrimaryGeneratedColumn()
     id?: number
 
     @Column()
     nome: String
 
-    @OneToMany(() => Veiculo, (veiculo) => veiculo.montadora, {
-        cascade: true,
-    })
-
+    @OneToMany(() => Veiculo, (veiculo) => veiculo.montadora, { cascade: true,})
     veiculos: Veiculo[]
 
     constructor(nome: string){

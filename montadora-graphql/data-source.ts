@@ -10,7 +10,7 @@ export const AppDataSource = new DataSource({
   port: 5432,
   database: "atv_graphql",
   username: "postgres",
-  password: "postgres",
+  password: "realvixx3010",
 
   synchronize: true,
   logging: false,

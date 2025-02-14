@@ -22,4 +22,5 @@ type Mutation{
   deletarMontadora(id: ID!) : Montadora 
 
   criarVeiculo(nome: String!, placa: String!, idMontadora: ID!) : Veiculo
+  deletarVeiculos(id: ID!): Veiculo
 }
