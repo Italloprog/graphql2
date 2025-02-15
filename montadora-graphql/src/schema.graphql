@@ -1,26 +1,26 @@
 type Montadora {
   id: ID!
   nome: String
-  veiculos: [Veiculo]
+  pais: String
+  ano_fundacao: Int
+  modelos: [Modelo]
 }
 
-type Veiculo {
+type Modelo {
   id: ID!
   nome: String
-  placa: String
   montadora : Montadora
 }
 
-
 type Query {
     montadoras: [Montadora]
-    veiculos: [Veiculo]
+    modelos: [Modelo]
 }
 
 type Mutation{
-  criarMontadora(nome: String!): Montadora
+  criarMontadora(nome: String!,pais: String!, ano_fundacao: Int!): Montadora
   deletarMontadora(id: ID!) : Montadora 
 
-  criarVeiculo(nome: String!, placa: String!, idMontadora: ID!) : Veiculo
-  deletarVeiculos(id: ID!): Veiculo
+  criarModelo(nome: String!, idMontadora: ID!) : Modelo
+  deletarModelos(id: ID!): Modelo
 }

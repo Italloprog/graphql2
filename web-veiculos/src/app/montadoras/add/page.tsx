@@ -14,14 +14,22 @@ const AddMontadoraPage: React.FC = () => {
     const { register, handleSubmit, formState: { errors, isSubmitSuccessful } } = useForm<MontadoraFormData>();
 
     const onSubmit = async (data: MontadoraFormData) => {
+
+        const mutation = `
+            mutation {
+                criarMontadora(nome : ${data.nome},pais: ${data.pais} ,ano_fundacao: ${data.ano_fundacao}) {
+                    id
+                }
+            }
+        `
+
         try {
-            const response = await fetch('http://localhost:8000/api/montadoras/', {
+            const response = await fetch('http://localhost:4000/graphql',{
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data),
-            });
+                headers: {'Content-Type': 'application/json',},
+                body: JSON.stringify({query: mutation}),
+            }
+            );
 
             if (!response.ok) {
                 throw new Error('Erro ao cadastrar montadora');

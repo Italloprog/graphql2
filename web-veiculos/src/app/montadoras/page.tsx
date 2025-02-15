@@ -2,32 +2,45 @@
 // import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import ButtonRemover from "./buttonRemover";
 
 export interface Montadora {
     id: number;
-    modelos: string[];
     nome: string;
     pais: string;
     ano_fundacao: number;
+    modelos: string[];
 }
 
 export default async function Montadora() {
 
-    // const [montadoras, setMontadoras] = useState<Montadora[]>([]);
+    const queryADC = `
+        query{
+            montadoras {
+                id
+                nome
+                pais
+                ano_fundacao
+                modelos{
+                    nome
+                }
+            }
+        }
+    `
 
-    // useEffect(() => {
-    //     fetch('http://localhost:8000/api/montadoras')
-    //         .then(response => response.json())
-    //         .then(data => setMontadoras(data))
-    //         .catch(error => console.error('Error fetching montadoras:', error));
-    // }, []);
 
-    const response = await fetch('http://localhost:8000/api/montadoras');
+    const response = await fetch('http://localhost:4000/graphql',{
+            method: 'POST',
+            headers: {'Content-Type': 'application/json',},
+            body: JSON.stringify({query: queryADC}),
+        }
+    );
 
     if (!response.ok) {
         throw new Error('Erro ao solicitar montadoras');
     }
-    let montadoras: Montadora[] =  await response.json();
+    let jsonResponse = await response.json();
+    let montadoras: Montadora[] =  jsonResponse.data.montadoras;
 
     return (
         <div className="flex flex-col items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
@@ -65,6 +78,8 @@ export default async function Montadora() {
                                     || (
                                         <span className="text-gray-400 mt-4 inline-block">Sem modelos cadastrados</span>)
                                 }
+                                <br />
+                                <ButtonRemover id_montadora = {montadora.id}/> 
                             </li>
                         ))}
                     </div>
@@ -76,4 +91,6 @@ export default async function Montadora() {
       
         </div>
     )
-}
+}//obs: tela n atualiza ao remover montadora pois estamos usando um server component, para atualizar interativamente, seria necessario
+// transformar em client component e utilizar o useState para criar setState e passar como parametro para função utilizar e atualizar a tela.
+// ou utilizando useEfect tbm.

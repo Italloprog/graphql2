@@ -2,7 +2,7 @@ import { BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "t
 import { Montadora } from "./montadora.entity";
 
 @Entity()
-export class Veiculo{
+export class Modelo{
 
     @PrimaryGeneratedColumn()
     id?: number
@@ -10,15 +10,11 @@ export class Veiculo{
     @Column()
     nome: String
 
-    @Column()
-    placa: String
-
-    @ManyToOne(() => Montadora, (montadora) => montadora.veiculos)
+    @ManyToOne(() => Montadora, (montadora) => montadora.modelos)
     montadora: Montadora
 
-    constructor(nome: string, placa: String, montadora: Montadora){
+    constructor(nome: string, montadora: Montadora){
         this.nome = nome;
-        this.placa = placa;
         this.montadora = montadora
     };
 }

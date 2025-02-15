@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import { DataSource } from "typeorm";
 import { Montadora } from "./src/montadora.entity";
-import { Veiculo } from "./src/veiculo.entity";
+import { Modelo } from "./src/modelo.entity";
 
 export const AppDataSource = new DataSource({
   type: "postgres",
@@ -10,11 +10,11 @@ export const AppDataSource = new DataSource({
   port: 5432,
   database: "atv_graphql",
   username: "postgres",
-  password: "realvixx3010",
+  password: "postgres",
 
   synchronize: true,
   logging: false,
-  entities: [Montadora,Veiculo], // pode ser como abaixo
+  entities: [Montadora,Modelo], // pode ser como abaixo
   migrations: [],
 });
 

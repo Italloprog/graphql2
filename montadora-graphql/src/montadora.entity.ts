@@ -1,5 +1,5 @@
 import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { Veiculo } from "./veiculo.entity";
+import { Modelo } from "./modelo.entity";
 
 @Entity()
 export class Montadora{
@@ -9,10 +9,18 @@ export class Montadora{
     @Column()
     nome: String
 
-    @OneToMany(() => Veiculo, (veiculo) => veiculo.montadora, { cascade: true,})
-    veiculos: Veiculo[]
+    @Column()
+    pais: String
 
-    constructor(nome: string){
-        this.nome = nome
+    @Column()
+    ano_fundacao: number
+
+    @OneToMany(() => Modelo, (modelo) => modelo.montadora, { cascade: true,})
+    modelos: Modelo[]
+
+    constructor(nome: string, pais: string, anoFund: number){
+        this.nome = nome;
+        this.pais = pais;
+        this.ano_fundacao = anoFund;
     };
 }

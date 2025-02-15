@@ -1,22 +1,20 @@
-import { MyGQLContext } from "./context-graphql";
 import { Montadora } from "./montadora.entity";
 import { AppDataSource } from "../data-source";
-import { Veiculo } from "./veiculo.entity";
+import { Modelo } from "./modelo.entity";
 
 const repositorioMontadoras = AppDataSource.getRepository("Montadora");
-const repositorioVeiculos = AppDataSource.getRepository('Veiculo');
+const repositorioModelos = AppDataSource.getRepository('Modelo');
 
 export const resolvers = {
   Query: {
-    
     montadoras: async (_parent: any, _args: any) => {
       return await repositorioMontadoras.find({
-        relations: ['veiculos']
+        relations: ['modelos']
       });
     },
 
-    veiculos: async (_parent: any, _args: any) => {
-      return await repositorioVeiculos.find({
+    modelos: async (_parent: any, _args: any) => {
+      return await repositorioModelos.find({
         relations: ['montadora']
       });
     },
@@ -24,8 +22,8 @@ export const resolvers = {
 
   Mutation:{
     criarMontadora: async (_parent: any, _args: any) => {
-      let {nome} = _args;
-      let novaMontadora = new Montadora(nome);
+      let {nome, pais, ano_fundacao} = _args;
+      let novaMontadora = new Montadora(nome, pais, ano_fundacao);
       let montadoraCriada = await repositorioMontadoras.save(novaMontadora);
       return montadoraCriada;
     },
@@ -47,38 +45,38 @@ export const resolvers = {
       return copiaMontadora;
     },
 
-    criarVeiculo: async (_parent: any, _args: any) => {
-      let {nome, placa, idMontadora} = _args;
+    criarModelo: async (_parent: any, _args: any) => {
+      let {nome, idMontadora} = _args;
       
       let montadoraAssociada = await AppDataSource.manager.findOne(Montadora, {
-        where: { id: idMontadora },
+        where: { id: idMontadora }, relations: ['modelos']
       });
       
       if (!montadoraAssociada){
         throw new Error('id da montadora não encontrado boy');
       }
 
-      let novoVeiculo = new Veiculo(nome,placa,montadoraAssociada);
+      let novoModelo = new Modelo(nome,montadoraAssociada);
 
-      let veiculoCriado = await repositorioVeiculos.save(novoVeiculo);
-      return veiculoCriado;
+      let modeloCriado = await repositorioModelos.save(novoModelo);
+      return modeloCriado;
     },
 
-    deletarVeiculos: async (_parent: any, _args: any) => {
+    deletarModelos: async (_parent: any, _args: any) => {
       let {id} = _args;
-      let veiculoApagar = await repositorioVeiculos.findOne({
-        where: {id: id}
-      })
+      let modeloApagar = await repositorioModelos.findOne({
+        where: {id: id}, relations: ['montadora']
+      });
      
-      if (!veiculoApagar){
+      if (!modeloApagar){
         throw new Error('id nao encontrado');
       }
 
-      let copiaVeiculo = { ...veiculoApagar };
+      let copiaModelo = { ...modeloApagar };
 
-      await repositorioVeiculos.remove(veiculoApagar);
+      await repositorioModelos.remove(modeloApagar);
       
-      return copiaVeiculo;
+      return copiaModelo;
     },
-  }
+  },
 };
