@@ -35,6 +35,6 @@ export default async function ButtonRemover({id,tipo}: {id: number, tipo: string
     }
     
     return (
-        <button onClick = {removerMontadora}>Remover Montadora</button>
+        <button onClick = {removerMontadora}>Remover</button>
     )
 }
