@@ -14,6 +14,18 @@ export const resolvers = {
     },
 
     modelos: async (_parent: any, _args: any) => {
+      let {idMontadora} = _args;
+
+      if (idMontadora){
+        let montadoraAssociada = await AppDataSource.manager.findOne(Montadora, {
+          where: { id: idMontadora }, relations: ['modelos']
+        });
+
+        return await repositorioModelos.find({
+          where: { montadora: montadoraAssociada }, relations: ['montadora']
+        });
+      }
+
       return await repositorioModelos.find({
         relations: ['montadora']
       });

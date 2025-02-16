@@ -17,7 +17,7 @@ const AddMontadoraPage: React.FC = () => {
 
         const mutation = `
             mutation {
-                criarMontadora(nome : ${data.nome},pais: ${data.pais} ,ano_fundacao: ${data.ano_fundacao}) {
+                criarMontadora(nome : "${data.nome}",pais: "${data.pais}" ,ano_fundacao: ${data.ano_fundacao}) {
                     id
                 }
             }

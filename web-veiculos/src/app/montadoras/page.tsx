@@ -39,6 +39,7 @@ export default async function Montadora() {
     if (!response.ok) {
         throw new Error('Erro ao solicitar montadoras');
     }
+    
     let jsonResponse = await response.json();
     let montadoras: Montadora[] =  jsonResponse.data.montadoras;
 
@@ -79,7 +80,13 @@ export default async function Montadora() {
                                         <span className="text-gray-400 mt-4 inline-block">Sem modelos cadastrados</span>)
                                 }
                                 <br />
-                                <ButtonRemover id_montadora = {montadora.id}/> 
+                                <a href= {`/montadoras/${montadora.id}/modelos/add`} className="flex items-center gap-2 text-blue-500 hover:text-blue-700">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fillRule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clipRule="evenodd" />
+                                    </svg>
+                                    Novo modelo
+                                </a>
+                                <ButtonRemover id = {montadora.id} tipo="montadora"/> 
                             </li>
                         ))}
                     </div>

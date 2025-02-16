@@ -14,7 +14,7 @@ type Modelo {
 
 type Query {
     montadoras: [Montadora]
-    modelos: [Modelo]
+    modelos(idMontadora: ID): [Modelo]
 }
 
 type Mutation{
